@@ -4,14 +4,14 @@ import { motion } from "framer-motion"
 
 /* Data contoh — tambahkan thumb jika ada (opsional) */
 const DATA = [
-  { title: "UTY Campus Campaign",   tag: "Lembaga Pendidikan", url: "https://www.instagram.com/utycampus/",           thumb: "/Portfolio/utycampus.png" },
-  { title: "UTY Creative Hub",      tag: "Media Kreatif",      url: "https://www.instagram.com/utycreative/",         thumb: "/Portfolio/uch.png" },
-  { title: "KUY! Roti Bakar",       tag: "Makanan & Minuman",  url: "https://www.instagram.com/tibatibakuy/",         thumb: "/Portfolio/kuyrotibakar.png" },
-  { title: "Mindcura",              tag: "Teknologi",          url: "https://www.youtube.com/@MindCura",         thumb: "/Portfolio/mindcura.png" },
-  { title: "Growpath Expo",         tag: "Event",              url: "https://www.instagram.com/utygrowpath.expo/",    thumb: "/Portfolio/growpathexpo.png" },
-  { title: "Perspektif UTY",        tag: "Organisasi",         url: "https://www.instagram.com/perspektif.uty/",      thumb: "/Portfolio/perspektif.png" },
-  { title: "Nawasena Omah Hipnoterapi", tag: "Kesehatan",      url: "https://www.instagram.com/nawasena.hipnoterapi/",thumb: "/Portfolio/nawasena.png" },
-  { title: "Nawa Skincare",         tag: "Kesehatan",          url: "https://www.instagram.com/nawaskincare.id/",     thumb: "/Portfolio/nawaskin.png" },
+  { title: "UTY Campus Campaign",   tag: "Lembaga Pendidikan", url: "https://www.instagram.com/utycampus/",           thumb: "/portfolio/utycampus.png" },
+  { title: "UTY Creative Hub",      tag: "Media Kreatif",      url: "https://www.instagram.com/utycreative/",         thumb: "/portfolio/uch.png" },
+  { title: "KUY! Roti Bakar",       tag: "Makanan & Minuman",  url: "https://www.instagram.com/tibatibakuy/",         thumb: "/portfolio/kuyrotibakar.png" },
+  { title: "Mindcura",              tag: "Teknologi",          url: "https://www.youtube.com/@MindCura",         thumb: "/portfolio/mindcura.png" },
+  { title: "Growpath Expo",         tag: "Event",              url: "https://www.instagram.com/utygrowpath.expo/",    thumb: "/portfolio/growpathexpo.png" },
+  { title: "Perspektif UTY",        tag: "Organisasi",         url: "https://www.instagram.com/perspektif.uty/",      thumb: "/portfolio/perspektif.png" },
+  { title: "Nawasena Omah Hipnoterapi", tag: "Kesehatan",      url: "https://www.instagram.com/nawasena.hipnoterapi/",thumb: "/portfolio/nawasena.png" },
+  { title: "Nawa Skincare",         tag: "Kesehatan",          url: "https://www.instagram.com/nawaskincare.id/",     thumb: "/portfolio/nawaskin.png" },
 ]
 
 export default function PortfolioCarousel({ items = DATA, auto = true, interval = 2800 }) {
