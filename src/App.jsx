@@ -2,7 +2,7 @@
 import { Phone } from "lucide-react"
 import logo from "./assets/logo.png"                  // logo kecil di header
 import heroMark from "./assets/logo.png"             // dipakai juga sebagai dekor hero
-import PortfolioCarousel from "./portfoliocarousel"
+import PortfolioCarousel from "./PortfolioCarousel"
 import PricingSection from "./PricingSection"
 import AboutSection from "./AboutSection"
 import ContactSection from "./ContactSection"
