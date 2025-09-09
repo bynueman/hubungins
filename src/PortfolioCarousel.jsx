@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 
 /* Data contoh — tambahkan thumb jika ada (opsional) */
 const DATA = [
-  { title: "UTY Campus Campaign",   tag: "Lembaga Pendidikan", url: "https://www.instagram.com/utycampus/",           thumb: "/public/portfolio/utycampus.png" },
+  { title: "UTY Campus Campaign",   tag: "Lembaga Pendidikan", url: "https://www.instagram.com/utycampus/",           thumb: "public/portfolio/utycampus.png" },
   { title: "UTY Creative Hub",      tag: "Media Kreatif",      url: "https://www.instagram.com/utycreative/",         thumb: "public/portfolio/uch.png" },
   { title: "KUY! Roti Bakar",       tag: "Makanan & Minuman",  url: "https://www.instagram.com/tibatibakuy/",         thumb: "public/portfolio/kuyrotibakar.png" },
   { title: "Mindcura",              tag: "Teknologi",          url: "https://www.youtube.com/@MindCura",         thumb: "public/portfolio/mindcura.png" },

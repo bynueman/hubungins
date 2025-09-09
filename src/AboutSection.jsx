@@ -1,6 +1,56 @@
-export default function AboutSection() {
+import { useEffect, useRef, useState } from "react";
+
+function CountUp({ target, duration = 1000, start = false }) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!start) return;
+    let startVal = 0;
+    const number = parseInt(target);
+    const plus = target.includes("+");
+    const step = number / (duration / 18);
+
+    function animate() {
+      startVal += step;
+      if (startVal >= number) {
+        setCount(number);
+      } else {
+        setCount(Math.floor(startVal));
+        requestAnimationFrame(animate);
+      }
+    }
+    animate();
+  }, [start, target, duration]);
+
   return (
-    <section id="about" className="bg-white">
+    <>
+      {count}
+      {target.includes("+") && "+"}
+    </>
+  );
+}
+
+export default function AboutSection() {
+  const sectionRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section id="about" ref={sectionRef} className="bg-white">
       <div className="container mx-auto max-w-7xl px-6 py-20 md:py-24">
         {/* Heading */}
         <div className="mx-auto max-w-3xl text-center">
@@ -15,7 +65,6 @@ export default function AboutSection() {
             dengan konten desain & video pendek yang fresh dan berdampak.
           </p>
         </div>
-
 
         {/* What makes us different */}
         <div className="mt-12 grid gap-6 lg:grid-cols-2">
@@ -70,9 +119,14 @@ export default function AboutSection() {
             { k: "30+", v: "Talent & KOL Partners" },
             { k: "2", v: "Program pemberdayaan komunitas" },
           ].map((s, i) => (
-            <div key={i} className="rounded-xl border border-slate-200 bg-white p-5">
-              <div className="text-xl font-bold text-[#156773]">{s.k}</div>
-              <div className="mt-1 text-sm text-slate-600">{s.v}</div>
+            <div
+              key={i}
+              className="rounded-xl border border-slate-200 bg-white p-8 flex flex-col items-center justify-center"
+            >
+              <div className="text-3xl md:text-4xl font-extrabold text-[#156773] text-center mb-1 leading-tight">
+                <CountUp target={s.k} duration={1000 + i * 400} start={isVisible} />
+              </div>
+              <div className="text-sm text-slate-600 text-center">{s.v}</div>
             </div>
           ))}
         </div>
@@ -90,7 +144,7 @@ export default function AboutSection() {
         <div className="mt-10 flex flex-col items-center gap-3">
           <a
             href="#contact"
-            className=" text-white rounded-xl bg-[#156773] px-6 py-3 text-base font-medium text-slate-900 hover:brightness-95"
+            className="text-white rounded-xl bg-[#156773] px-6 py-3 text-base font-medium text-slate-900 hover:brightness-95"
           >
             Konsultasi Gratis
           </a>
@@ -100,5 +154,5 @@ export default function AboutSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
