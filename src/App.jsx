@@ -7,6 +7,14 @@ import PortfolioCarousel from "./portfoliocarousel";
 import PricingSection from "./PricingSection";
 import AboutSection from "./AboutSection";
 import ContactSection from "./ContactSection";
+import { motion } from "framer-motion"
+import { Phone } from "lucide-react"
+import logo from "./assets/logo.png"                  // logo kecil di header
+import heroMark from "./assets/logo.png"             // dipakai juga sebagai dekor hero
+import PortfolioCarousel from "./PortfolioCarousel"
+import PricingSection from "./PricingSection"
+import AboutSection from "./AboutSection"
+import ContactSection from "./ContactSection"
 
 export default function App() {
   const [navOpen, setNavOpen] = useState(false);
