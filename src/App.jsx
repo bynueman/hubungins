@@ -7,14 +7,6 @@ import PortfolioCarousel from "./portfoliocarousel";
 import PricingSection from "./PricingSection";
 import AboutSection from "./AboutSection";
 import ContactSection from "./ContactSection";
-import { motion } from "framer-motion"
-import { Phone } from "lucide-react"
-import logo from "./assets/logo.png"                  // logo kecil di header
-import heroMark from "./assets/logo.png"             // dipakai juga sebagai dekor hero
-import PortfolioCarousel from "./PortfolioCarousel"
-import PricingSection from "./PricingSection"
-import AboutSection from "./AboutSection"
-import ContactSection from "./ContactSection"
 
 export default function App() {
   const [navOpen, setNavOpen] = useState(false);
@@ -157,10 +149,10 @@ export default function App() {
 
       {/* ================= Footer ================= */}
       <footer className="shadow">
-  <div className="container mx-auto max-w-7xl px-4 sm:px-6 py-8 text-sm text-slate-500 text-center">
-    © {new Date().getFullYear()} Hubung’ins. All rights reserved.
-  </div>
-</footer>
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 py-8 text-sm text-slate-500 text-center">
+          © {new Date().getFullYear()} Hubung’ins. All rights reserved.
+        </div>
+      </footer>
     </div>
   );
 }
