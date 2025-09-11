@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { Sparkles, Rocket, Users, TrendingUp, PhoneCall } from "lucide-react";
 
-/* -------- Counter (tidak diubah, hanya dipoles minor) -------- */
+/* -------- Counter (tetap) -------- */
 function CountUp({ target, duration = 1000, start = false }) {
   const [count, setCount] = useState(0);
   useEffect(() => {
@@ -26,7 +28,7 @@ function CountUp({ target, duration = 1000, start = false }) {
   );
 }
 
-/* -------- Section About with visual upgrades -------- */
+/* -------- Section About (fokus: Kenapa Hubung’ins + animasi) -------- */
 export default function AboutSection() {
   const sectionRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -41,6 +43,38 @@ export default function AboutSection() {
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
+
+  // Variants animasi
+  const fadeUp = {
+    hidden: { opacity: 0, y: 14 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
+  };
+  const stagger = {
+    show: { transition: { staggerChildren: 0.12 } },
+  };
+
+  const REASONS = [
+    {
+      icon: Sparkles,
+      title: "Ide Fresh",
+      desc: "Nggak pasaran—selalu kontekstual sama persona brand kamu.",
+    },
+    {
+      icon: Rocket,
+      title: "Eksekusi Gesit",
+      desc: "Workflow rapi: konsep → produksi → publish cepat tanpa ribet.",
+    },
+    {
+      icon: Users,
+      title: "Super Personal",
+      desc: "Beneran tailored: komunikasi intens & 1 tim fokus ke projectmu.",
+    },
+    {
+      icon: TrendingUp,
+      title: "Hasil Terukur",
+      desc: "Ngonten yang keliatan dampaknya, bukan sekadar ‘rame doang’.",
+    },
+  ];
 
   return (
     <section id="about" ref={sectionRef} className="relative overflow-hidden">
@@ -69,10 +103,11 @@ export default function AboutSection() {
 
       <div className="container mx-auto max-w-7xl px-6 py-20 md:py-24">
         {/* Heading */}
-        <div
-          className={`mx-auto max-w-3xl text-center transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          animate={isVisible ? "show" : "hidden"}
+          className="mx-auto max-w-3xl text-center"
         >
           <span className="inline-flex items-center gap-2 rounded-full bg-white/70 backdrop-blur px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#156773] ring-1 ring-[#156773]/20">
             <span className="inline-block size-1.5 rounded-full bg-[#156773]" />
@@ -86,84 +121,73 @@ export default function AboutSection() {
           </h2>
 
           <p className="mt-4 text-slate-600">
-            Short Video Content Specialist No.1 di Yogyakarta, kami bantu brand tampil beda
-            dengan konten desain & video pendek yang fresh dan berdampak.
+            Short Video Content Specialist Paling Asik No.1 di Indonesia, kami bantu brand tampil beda
+            dengan konten desain &amp; video pendek yang fresh dan berdampak.
           </p>
-        </div>
+        </motion.div>
 
-        {/* What makes us different + Tantangan */}
-        <div className="mt-12 grid gap-6 lg:grid-cols-2">
-          <div
-            className={`group rounded-2xl border border-slate-200 bg-white/80 backdrop-blur p-6 shadow-sm transition-all duration-500 hover:shadow-lg hover:-translate-y-0.5 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
-            }`}
-          >
+        {/* Kenapa Hubung’ins? */}
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          animate={isVisible ? "show" : "hidden"}
+          className="mt-12"
+        >
+          <motion.div variants={fadeUp} className="mb-5">
             <div className="inline-flex items-center gap-2 rounded-full bg-[#156773]/10 px-3 py-1 text-xs font-semibold text-[#156773] ring-1 ring-[#156773]/20">
               Kenapa Hubung’ins?
             </div>
-            <p className="mt-3 text-sm text-slate-600">
-              Kami nggak sekadar ikut tren, kami bantu kamu jadi trendsetter lewat solusi kreatif
-              yang dirancang khusus untuk kebutuhan brand-mu.
-            </p>
-            <ul className="mt-4 space-y-2 text-sm">
-              {[
-                "Ide fresh yang nggak pasaran",
-                "Tim gesit: eksekusi cepat tanpa ribet",
-                "Layanan super personal & tailored",
-                "Fokus ke hasil yang bisa dilihat & dirasakan",
-              ].map((t, i) => (
-                <li key={i} className="flex gap-2">
-                  <span className="mt-1 inline-block size-1.5 rounded-full bg-[#156773]" />
-                  <span className="transition-colors group-hover:text-slate-800">{t}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          </motion.div>
 
-          <div
-            className={`group rounded-2xl border border-slate-200 bg-white/80 backdrop-blur p-6 shadow-sm transition-all duration-500 hover:shadow-lg hover:-translate-y-0.5 ${
-              isVisible ? "opacity-100 translate-y-0 delay-100" : "opacity-0 translate-y-3"
-            }`}
-          >
-            <div className="inline-flex items-center gap-2 rounded-full bg-slate-900/5 px-3 py-1 text-xs font-semibold text-slate-800 ring-1 ring-slate-200">
-              Tantangan yang sering kamu hadapi
-            </div>
-            <ul className="mt-4 space-y-2 text-sm">
-              {[
-                "Pengen konten keren, bingung mulai dari mana",
-                "Produksi, operasional, marketing dipegang sendiri",
-                "Nggak sempat riset tren, konsep, syuting, editing, algoritma",
-                "Posting asal-asalan, performa jalan di tempat",
-              ].map((t, i) => (
-                <li key={i} className="flex gap-2">
-                  <span className="mt-1 inline-block size-1.5 rounded-full bg-[#156773]" />
-                  <span className="transition-colors group-hover:text-slate-800">{t}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-3 text-sm text-slate-600">
-              Saatnya bikin brand kamu <span className="font-semibold">stand out</span> bareng Hubung’ins.
-            </p>
+          <div className="grid gap-6 sm:grid-cols-2">
+            {REASONS.map(({ icon: Icon, title, desc }, i) => (
+              <motion.div
+                key={title}
+                variants={fadeUp}
+                whileHover={{ y: -6, scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 260, damping: 18 }}
+                className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white/80 backdrop-blur p-6 shadow-sm"
+              >
+                {/* aksen garis tipis */}
+                <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-transparent"
+                  style={{ boxShadow: "inset 0 0 0 1px rgba(21,103,115,0.08)" }} />
+
+                <div className="flex items-start gap-4">
+                  <div className="shrink-0 rounded-xl bg-[#156773]/10 p-3 text-[#156773] ring-1 ring-[#156773]/15">
+                    <Icon className="size-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-semibold">{title}</h3>
+                    <p className="mt-1 text-sm text-slate-600">{desc}</p>
+                  </div>
+                </div>
+
+                {/* highlight strip on hover */}
+                <span className="pointer-events-none absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#156773]/40 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              </motion.div>
+            ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Proof / social numbers */}
-        <div
-          className={`mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          animate={isVisible ? "show" : "hidden"}
+          className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
         >
           {[
-            { k: "9+", v: "Clients (UMKM, Universitas, Startup)" },
+            { k: "15+", v: "Clients (UMKM, Universitas, Startup, Personal Content)" },
             { k: "10+", v: "Kolaborasi B2B" },
             { k: "50+", v: "Talent & KOL Partners" },
             { k: "4", v: "Program pemberdayaan komunitas" },
           ].map((s, i) => (
-            <div
+            <motion.div
               key={i}
-              className="relative overflow-hidden rounded-xl border border-slate-200 bg-white p-8 shadow-sm transition-all duration-500 hover:-translate-y-0.5 hover:shadow-lg"
+              variants={fadeUp}
+              whileHover={{ y: -4 }}
+              className="relative overflow-hidden rounded-xl border border-slate-200 bg-white p-8 shadow-sm"
             >
-              {/* ring gradient sebagai aksen */}
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-transparent"
@@ -176,44 +200,52 @@ export default function AboutSection() {
                 <CountUp target={s.k} duration={1000 + i * 350} start={isVisible} />
               </div>
               <div className="text-center text-sm text-slate-600">{s.v}</div>
-
-              {/* highlight strip halus di bawah */}
               <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#156773]/30 to-transparent" />
-            </div>
+            </motion.div>
           ))}
-        </div>
-
-        {/* Philosophy / commitment */}
-        <div
-          className={`mt-12 relative rounded-2xl border border-[#156773]/20 bg-[#156773]/5 p-6 transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
-          }`}
-        >
-          {/* garis aksen tipis */}
-          <div className="absolute -top-px left-6 right-6 h-[2px] bg-gradient-to-r from-transparent via-[#156773] to-transparent opacity-70" />
-          <p className="text-sm text-slate-700">
-            Kita percaya setiap brand layak dapet perhatian asik dan personal. Karena itu, klien
-            tiap bulan kita batasin, supaya ide tetep fresh, kreativitas ngalir, dan setiap proyek
-            bisa kita garap dengan penuh asik dan totalitas.
-          </p>
-        </div>
+        </motion.div>
 
         {/* CTA */}
-        <div
-          className={`mt-10 flex flex-col items-center gap-3 transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
-          }`}
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          animate={isVisible ? "show" : "hidden"}
+          className="mt-10 flex flex-col items-center gap-3"
         >
           <a
             href="#contact"
-            className="rounded-xl bg-[#156773] px-6 py-3 text-base font-semibold text-white shadow hover:brightness-110 active:scale-[0.99] transition"
+            aria-label="Konsultasi Gratis"
+            className="
+              group relative inline-flex items-center gap-3
+              rounded-[30px] px-7 sm:px-9 py-3.5 sm:py-4
+              text-white font-semibold
+              shadow-lg shadow-teal-900/10 ring-1 ring-white/10
+              transition active:scale-[0.985]
+            "
+            style={{
+              background:
+                "linear-gradient(90deg, #156773, #1A8A98, #23A3B3, #156773)",
+              backgroundSize: "200% 100%",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundPosition = "100% 0")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundPosition = "0% 0")
+            }
           >
-            Konsultasi Gratis
+            {/* shine effect */}
+            <span className="pointer-events-none absolute inset-0 overflow-hidden rounded-[30px]">
+              <span className="absolute -left-1/3 top-0 h-full w-1/3 translate-x-[-100%] bg-white/25 blur-md transition-transform duration-700 group-hover:translate-x-[260%]" />
+            </span>
+            <PhoneCall className="size-5 opacity-90" />
+            <span>Konsultasi Gratis</span>
           </a>
+
           <p className="text-xs text-slate-500">
             Mau buat konten? Konsultasi sekarang.
           </p>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 import React from "react";
 
 const LOGOS = [
+  "uty-min.png",
   "dinkopsleman-min.png",
   "ikapawitikra-min.png",
   "sigma-min.png",
@@ -24,7 +25,7 @@ export default function ColabSection() {
           style={{
             fontFamily: `"Helvetica Now", Helvetica, Arial, sans-serif`,
             letterSpacing: "0.06em",
-            color: "#303a49",
+            color: "#000000ff",
           }}
         >
           Kolaborasi & Client Kami

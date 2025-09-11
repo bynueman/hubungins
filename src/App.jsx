@@ -1,16 +1,49 @@
-﻿import { useState } from "react";
+﻿// App.jsx
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
-import PortfolioCarousel from "./portfoliocarousel";
 import PricingSection from "./PricingSection";
 import AboutSection from "./AboutSection";
 import ContactSection from "./ContactSection";
 import ServicesSection from "./ServicesSection";
 import ColabSection from "./ColabSection";
 
-export default function App() {
-  const [navOpen, setNavOpen] = useState(false);
+// Portofolio (ringkas & halaman penuh)
+import PortfolioFeatured from "./PortfolioFeatured";
+import PortfolioPage from "./PortfolioPage";
 
+function Home() {
+  return (
+    <>
+      {/* HERO */}
+      <Hero />
+
+      {/* Sections lain */}
+      <ColabSection />
+      <ServicesSection />
+
+      {/* Portofolio ringkas (acak) */}
+      <section className="container mx-auto max-w-7xl px-4 sm:px-6 py-16 sm:py-24">
+        <div className="mt-10">
+          {/* Tombol “Lihat Semua” akan menuju /portfolio */}
+          <PortfolioFeatured allHref="/portfolio" />
+        </div>
+      </section>
+
+      <PricingSection />
+      <AboutSection />
+      <ContactSection />
+
+      <footer className="shadow">
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 py-8 text-sm text-slate-500 text-center">
+          © {new Date().getFullYear()} Hubung’ins. All rights reserved.
+        </div>
+      </footer>
+    </>
+  );
+}
+
+export default function App() {
   return (
     <div className="min-h-dvh bg-white text-slate-900 overflow-x-hidden relative">
       {/* === BACKDROP GLOBAL: radial glow + grid halus (brand #156773) === */}
@@ -36,33 +69,16 @@ export default function App() {
         <rect width="1600" height="500" fill="url(#app-grid)" />
       </svg>
 
-      {/* HEADER */}
-      <Header />
+      {/* ROUTER + HEADER */}
+      <BrowserRouter>
+        <Header />
 
-      {/* HERO */}
-      <Hero/>
-
-      {/* Sections lain */}
-      <ColabSection />
-      <ServicesSection />
-
-      <section id="portfolio" className="container mx-auto max-w-7xl px-4 sm:px-6 py-16 sm:py-24">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-center">Portofolio</h2>
-        <p className="mt-3 text-center text-slate-600">Beberapa proyek yang pernah kami kerjakan.</p>
-        <div className="mt-8">
-          <PortfolioCarousel />
-        </div>
-      </section>
-
-      <PricingSection />
-      <AboutSection />
-      <ContactSection />
-
-      <footer className="shadow mt-8">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6 py-8 text-sm text-slate-500 text-center">
-          © {new Date().getFullYear()} Hubung’ins. All rights reserved.
-        </div>
-      </footer>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          {/* Halaman portofolio lengkap + filter kategori */}
+          <Route path="/portfolio" element={<PortfolioPage />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
