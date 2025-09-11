@@ -4,7 +4,6 @@ const DATA = {
   tiktok: [
     {
       name: "Basic",
-      price: "Rp 3.500.000/bulan",
       popular: false,
       features: [
         "8 konten softsell (15–30 dtk)",
@@ -18,7 +17,6 @@ const DATA = {
     },
     {
       name: "Growth",
-      price: "Rp 5.000.000/bulan",
       popular: true,
       features: [
         "7 softsell + 1 hardsell",
@@ -36,7 +34,6 @@ const DATA = {
   instagram: [
     {
       name: "Basic",
-      price: "Rp 3.800.000/bulan",
       popular: false,
       features: [
         "8 Reels softsell (15–30 dtk)",
@@ -50,7 +47,6 @@ const DATA = {
     },
     {
       name: "Growth",
-      price: "Rp 5.500.000/bulan",
       popular: true,
       features: [
         "7 softsell + 1 hardsell",
@@ -70,7 +66,6 @@ const DATA = {
       title: "Short Content Production",
       subtitle: "Untuk yang butuh video saja",
       badge: "Reguler",
-      price: "Rp 2.500.000/project",
       bullets: [
         "8 video (15–45 dtk) untuk Reels & TikTok",
         "Konsep/ide/script dikembangkan Hubung’ins",
@@ -82,7 +77,6 @@ const DATA = {
       title: "Comedy/Sketsa",
       subtitle: "Series/cerita character-based",
       badge: "Premium",
-      price: "Harga fleksibel (hubungi kami)",
       bullets: [
         "8 video (2 hardsell)",
         "Skenario & naskah komedi full",
@@ -94,7 +88,6 @@ const DATA = {
       title: "Social Media Branding",
       subtitle: "One-time project",
       badge: "UMKM Murah",
-      price: "Rp 4.200.000/project",
       bullets: [
         "Guideline sheet & pembuatan logo",
         "Optimasi IG & TikTok",
@@ -104,7 +97,6 @@ const DATA = {
       title: "Brand Reset Starter",
       subtitle: "",
       badge: "Starter",
-      price: "Rp 4.200.000/project",
       bullets: [
         "Riset & analisis pasar",
         "Strategi pengembangan bisnis",
@@ -115,7 +107,6 @@ const DATA = {
       title: "Brand Identity Plus",
       subtitle: "",
       badge: "Plus",
-      price: "Rp 6.000.000/project",
       bullets: [
         "Semua di Starter",
         "Visual style guide (font/warna/mood)",
@@ -123,6 +114,22 @@ const DATA = {
       ],
     },
   ],
+}
+
+// Komponen kecil Negotiable
+function NegotiablePill({ className = "" }) {
+  return (
+    <span
+      className={
+        "inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold " +
+        "bg-gradient-to-r from-emerald-600 to-cyan-600 text-white shadow-sm ring-1 ring-emerald-500/40 " +
+        "hover:brightness-105 transition " +
+        className
+      }
+    >
+      Negotiable
+    </span>
+  )
 }
 
 export default function PricingSection() {
@@ -136,7 +143,7 @@ export default function PricingSection() {
           Harga & Paket
         </h2>
         <p className="mt-3 text-center text-slate-600">
-          Pilih paket sesuai kebutuhanmu. Semua harga transparan & bisa dikustom sesuai brief.
+          Pilih paket sesuai kebutuhanmu. Semua harga fleksibel & bisa dikustom sesuai brief.
         </p>
 
         {/* Tabs */}
@@ -175,14 +182,16 @@ export default function PricingSection() {
               }`}
             >
               {p.popular && (
-                <span className="text-white absolute -top-3 right-4 rounded-full bg-[#156773] px-3 py-1 text-xs font-semibold text-slate-900 shadow">
+                <span className="absolute -top-3 right-4 rounded-full bg-[#156773] px-3 py-1 text-xs font-semibold text-white shadow">
                   Paling Populer
                 </span>
               )}
-              <div className="flex items-baseline justify-between">
+
+              <div className="flex items-start justify-between gap-3">
                 <h3 className="text-xl font-bold">{p.name}</h3>
-                <div className="text-right text-lg font-semibold">{p.price}</div>
+                <NegotiablePill />
               </div>
+
               <ul className="mt-4 space-y-2 text-sm text-slate-700">
                 {p.features.map((f, i) => (
                   <li key={i} className="flex gap-2">
@@ -213,7 +222,11 @@ export default function PricingSection() {
                   </span>
                 )}
               </div>
-              <div className="mt-2 text-base font-semibold">{o.price}</div>
+
+              <div className="mt-3">
+                <NegotiablePill />
+              </div>
+
               <ul className="mt-4 space-y-2 text-sm text-slate-700">
                 {o.bullets.map((b, j) => (
                   <li key={j} className="flex gap-2">
@@ -230,15 +243,14 @@ export default function PricingSection() {
         <div className="mt-10 flex justify-center">
           <a
             href="#contact"
-            className="text-white rounded-xl bg-[#156773] px-6 py-3 text-base font-medium text-slate-900 hover:brightness-95"
+            className="rounded-xl bg-[#156773] px-6 py-3 text-base font-semibold text-white shadow hover:brightness-110 transition"
           >
-            Konsultasi Gratis
+            Hubungi Kami
           </a>
         </div>
 
-        {/* Notes */}
         <p className="mt-6 text-xs text-slate-500 text-center">
-          * Durasi video dan perangkat produksi mengikuti paket. Detail lengkap tersedia saat konsultasi.
+          * Semua paket bersifat fleksibel & bisa dinegosiasikan sesuai kebutuhan dan target brand.
         </p>
       </div>
     </section>
