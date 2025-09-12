@@ -1,198 +1,300 @@
-// src/components/Header.jsx
-import { useEffect, useMemo, useRef, useState } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { Menu, X } from "lucide-react";
-import logo from "../assets/logo.png"; // sesuaikan jika path berbeda
+import { motion, useMotionValue, useTransform, useReducedMotion, AnimatePresence } from "framer-motion";
+import { Phone, Play, Sparkles } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import logo from "../assets/logo.png";
 
-const NAV = [
-  { label: "Home", href: "#hero" },
-  { label: "Portofolio", href: "#portfolio" },
-  { label: "Layanan", href: "#services" },
-  { label: "Kontak", href: "#contact" },
-];
+const ROTATING = ["Cepat", "Asik", "Strategis", "Kreatif"]; // ⬅ NEW mobile
 
-export default function Header() {
+export default function Hero({
+  title = <>Kalo Soal Ngonten, <br className="hidden sm:block" /> Gampang Dihubungin!</>,
+  subtitle = "Spesialis Konten Video Singkat Paling Asik No.1 di Indonesia",
+  primaryCtaLabel = "Konsultasi",
+  primaryCtaHref = "https://wa.me/62881023513057",
+  secondaryCtaLabel = "Lihat Portofolio",
+  secondaryCtaHref = "#portfolio",
+}) {
   const prefersReduce = useReducedMotion();
-  const [open, setOpen] = useState(false);
-  const [elevated, setElevated] = useState(false);
-  const barRef = useRef(null);
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const tx1 = useTransform(mx, [-1, 1], ["-1.5%", "1.5%"]);
+  const ty1 = useTransform(my, [-1, 1], ["-1.5%", "1.5%"]);
+  const tx2 = useTransform(mx, [-1, 1], ["1.2%", "-1.2%"]);
+  const ty2 = useTransform(my, [-1, 1], ["0.8%", "-0.8%"]);
 
-  // Catat tinggi header ke CSS var agar section lain bisa offset pakai scroll-mt-*
   useEffect(() => {
-    const el = barRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver(() => {
-      const h = el.getBoundingClientRect().height;
-      document.documentElement.style.setProperty("--header-height", `${Math.round(h)}px`);
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
+    if (prefersReduce) return;
+    const onMove = (e) => {
+      const { innerWidth: w, innerHeight: h } = window;
+      const nx = (e.clientX / w) * 2 - 1;
+      const ny = (e.clientY / h) * 2 - 1;
+      mx.set(nx); my.set(ny);
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => window.removeEventListener("pointermove", onMove);
+  }, [mx, my, prefersReduce]);
+
+  const reveal = {
+    hidden: { opacity: 0, y: 14 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
+  };
+
+  // ⬅ NEW mobile: rotating word for subtitle
+  const [rotIdx, setRotIdx] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setRotIdx((i) => (i + 1) % ROTATING.length), 1800);
+    return () => clearInterval(t);
   }, []);
 
-  // Tambah bayangan ringan saat scroll
-  useEffect(() => {
-    const onScroll = () => setElevated(window.scrollY > 6);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // Kunci scroll saat menu terbuka
-  useEffect(() => {
-    const root = document.documentElement;
-    if (!open) return;
-    const prev = root.style.overflow;
-    root.style.overflow = "hidden";
-    return () => { root.style.overflow = prev; };
-  }, [open]);
-
-  // Tutup dengan ESC
-  useEffect(() => {
-    const onKey = (e) => { if (e.key === "Escape") setOpen(false); };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
-
-  const variants = useMemo(
-    () => ({
-      sheet: {
-        initial: { y: -12, opacity: 0 },
-        animate: {
-          y: 0,
-          opacity: 1,
-          transition: prefersReduce
-            ? { duration: 0.18 }
-            : { type: "spring", stiffness: 360, damping: 30 },
-        },
-        exit: { y: -10, opacity: 0, transition: { duration: 0.16, ease: "easeOut" } },
-      },
-      item: {
-        initial: { opacity: 0, y: 8 },
-        animate: { opacity: 1, y: 0, transition: { duration: 0.18, ease: "easeOut" } },
-        exit: { opacity: 0, y: 6, transition: { duration: 0.12 } },
-      },
-    }),
-    [prefersReduce]
+  // ⬅ NEW mobile: chips & stats data
+  const chips = useMemo(
+    () => ["UGC", "Ads Creative", "IG/TikTok Reels", "Konten Edukasi", "Event Coverage", "Brand Strategy"],
+    []
+  );
+  const stats = useMemo(
+    () => [
+      { k: "30+", v: "Klien" },
+      { k: "300+", v: "Video" },
+      { k: "7 jt+", v: "Views" },
+    ],
+    []
   );
 
   return (
-    <header
-      ref={barRef}
-      className={`fixed inset-x-0 top-0 z-50 transition
-        ${elevated
-          ? "bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/70 shadow-sm ring-1 ring-slate-900/5"
-          : "bg-white/65 backdrop-blur-sm supports-[backdrop-filter]:bg-white/55"}
-      `}
+    <section
+      id="hero"
+      className="relative min-h-[70svh] sm:min-h-[70vh] md:min-h-[75vh] flex items-center overflow-visible pt-[max(4.5rem,env(safe-area-inset-top))] sm:pt-24 pb-8 md:pb-12"
       style={{ fontFamily: '"Helvetica Now", Helvetica, Arial, sans-serif' }}
     >
-      <div className="container mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="flex items-center justify-between py-3">
-          {/* Brand */}
-          <a href="/#hero" className="flex items-center gap-2 min-w-0 select-none">
-            <img src={logo} alt="Hubung’ins" className="h-7 sm:h-8 w-auto" />
-            <span className="truncate font-extrabold text-lg sm:text-xl">Hubung’ins</span>
-          </a>
+      {/* === Mobile-only ambient: spotlight + grid === */}
+      <div className="sm:hidden absolute inset-0 -z-10">
+        {/* spotlight */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(120vw 60vw at 70% 10%, rgba(21,103,115,0.18), transparent 55%), radial-gradient(80vw 50vw at 10% 60%, rgba(21,103,115,0.12), transparent 60%)",
+          }}
+        />
+        {/* subtle grid */}
+        <div
+          className="absolute inset-0 opacity-[0.08]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, #0f172a11 1px, transparent 1px), linear-gradient(to bottom, #0f172a11 1px, transparent 1px)",
+            backgroundSize: "20px 20px",
+          }}
+        />
+      </div>
 
-          {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-6">
-            {NAV.map((n) => (
-              <a key={n.href} href={n.href} className="text-slate-700 hover:text-slate-900 font-medium">
-                {n.label}
-              </a>
-            ))}
-            <a
-              href="https://wa.me/62881023513057"
-              className="rounded-lg bg-[#156773] text-white px-4 py-2 font-semibold hover:brightness-110"
-            >
-              Konsultasi
-            </a>
-          </nav>
+      {/* Logo desktop */}
+      <img
+        src={logo}
+        alt=""
+        aria-hidden
+        className="hidden sm:block pointer-events-none select-none absolute -right-10 -top-1 w-[480px] md:w-[600px] lg:w-[700px] -rotate-8 z-10"
+      />
+      {/* Logo kecil (mobile) */}
+      <img
+        src={logo}
+        alt=""
+        aria-hidden
+        className="sm:hidden pointer-events-none select-none absolute right-4 w-[64px] h-auto rounded-xl shadow-md opacity-90"
+        style={{ top: "calc(var(--header-height, 64px) + 25px)" }}
+      />
 
-          {/* Mobile toggle */}
-          <button
-            aria-label="Buka menu"
-            onClick={() => setOpen(true)}
-            className="md:hidden inline-flex items-center justify-center rounded-lg p-2 ring-1 ring-slate-300 bg-white/70"
-          >
-            <Menu className="size-5" />
-          </button>
+      {/* === Background bubbles (tetap) === */}
+      <motion.div
+        className="absolute left-0 top-0 w-full h-full pointer-events-none z-0"
+        initial={prefersReduce ? { opacity: 1 } : { opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+      >
+        <motion.div style={{ x: tx1, y: ty1 }} className="absolute inset-0">
+          <motion.div
+            className="absolute bg-[#156773] opacity-10 rounded-full left-[-12vw] top-[-14vw] w-[42vw] h-[42vw] min-w-[160px] min-h-[160px] sm:min-w-[200px] sm:min-h-[200px]"
+            initial={{ scale: 1, opacity: 0.12 }}
+            animate={prefersReduce ? { opacity: 0.12 } : { scale: [1, 1.12, 1], opacity: [0.12, 0.18, 0.12] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="absolute bg-[#156773] opacity-10 rounded-full left-[38vw] top-[14vh] w-[18vw] h-[18vw] min-w-[90px] min-h-[90px] max-w-[220px] max-h-[220px]"
+            initial={{ scale: 1.02, opacity: 0.08 }}
+            animate={prefersReduce ? { opacity: 0.08 } : { scale: [1.02, 0.94, 1.02], opacity: [0.08, 0.12, 0.08] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="absolute bg-[#156773] opacity-10 rounded-full left-[1vw] bottom-[6vw] w-[30vw] h-[30vw] min-w-[140px] min-h-[140px] max-w-[340px] max-h-[340px]"
+            initial={{ scale: 1, opacity: 0.14 }}
+            animate={prefersReduce ? { opacity: 0.14 } : { scale: [1, 1.22, 1], opacity: [0.14, 0.2, 0.14] }}
+            transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </motion.div>
+        <motion.div style={{ x: tx2, y: ty2 }} className="absolute inset-0">
+          <motion.div
+            className="absolute bg-[#156773] opacity-10 rounded-full right-[-12vw] top-[-11vw] w-[30vw] h-[30vw] min-w-[120px] min-h-[120px] max-w-[420px] max-h-[420px]"
+            initial={{ scale: 0.98, opacity: 0.09 }}
+            animate={prefersReduce ? { opacity: 0.09 } : { scale: [0.98, 1.16, 0.98], opacity: [0.09, 0.15, 0.09] }}
+            transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="absolute bg-[#156773] opacity-10 rounded-full right-[14vw] bottom-[8vw] w-[28vw] h-[28vw] min-w-[150px] min-h-[150px] max-w-[320px] max-h-[320px]"
+            initial={{ scale: 1, opacity: 0.12 }}
+            animate={prefersReduce ? { opacity: 0.12 } : { scale: [1, 1.18, 1], opacity: [0.12, 0.18, 0.12] }}
+            transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="absolute bg-[#156773] opacity-10 rounded-full right-[16vw] top-[10vh] w-[8vw] h-[8vw] min-w-[44px] min-h-[44px] max-w-[120px] max-h-[120px]"
+            initial={{ scale: 1, opacity: 0.07 }}
+            animate={prefersReduce ? { opacity: 0.07 } : { scale: [1, 1.08, 1], opacity: [0.07, 0.11, 0.07] }}
+            transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </motion.div>
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#156773]/40 to-transparent" />
+      </motion.div>
+
+      {/* === HERO CONTENT === */}
+      <div className="relative z-20 w-full">
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 pt-20 sm:pt-24 md:pt-36 pb-2 md:pb-18">
+          <div className="grid grid-cols-12 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-start">
+            <div className="col-span-12 lg:col-span-7">
+              <motion.h1 variants={reveal} initial="hidden" animate="show"
+                className="text-[clamp(2rem,6vw,3.75rem)] sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.08] tracking-tight">
+                {title}
+              </motion.h1>
+
+              {/* Subtitle: desktop pakai teks biasa, mobile dapat rotating */}
+              <div className="mt-4 sm:mt-5 max-w-[65ch]">
+                {/* mobile rotating */}
+                <div className="sm:hidden text-slate-900 text-base">
+                  <span>Spesialis Konten Video </span>
+                  <span className="inline-flex items-center gap-1 font-bold">
+                    <AnimatePresence mode="wait" initial={false}>
+                      <motion.span
+                        key={rotIdx}
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8 }}
+                        transition={{ duration: 0.28, ease: "easeOut" }}
+                        className="text-[#156773]"
+                      >
+                        {ROTATING[rotIdx]}
+                      </motion.span>
+                    </AnimatePresence>
+                    <Sparkles className="size-4" />
+                  </span>
+                </div>
+                {/* desktop original */}
+                <motion.p
+                  variants={reveal}
+                  initial="hidden"
+                  animate="show"
+                  transition={{ delay: 0.08, duration: 0.5, ease: "easeOut" }}
+                  className="hidden sm:block text-slate-900 text-lg"
+                >
+                  {subtitle}
+                </motion.p>
+              </div>
+
+              {/* CTA */}
+              <motion.div variants={reveal} initial="hidden" animate="show"
+                transition={{ delay: 0.16, duration: 0.5, ease: "easeOut" }}
+                className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4"
+              >
+                {/* Primary */}
+                <motion.a
+                  href={primaryCtaHref}
+                  className="group relative inline-flex items-center justify-center gap-2 rounded-xl bg-[#156773] px-5 py-3 font-semibold text-white overflow-hidden shadow-md cta-breathe"
+                  whileHover={prefersReduce ? undefined : { y: -2, scale: 1.02 }}
+                  whileTap={{ scale: 0.985 }}
+                >
+                  <Phone className="size-4 opacity-90" />
+                  <span className="relative z-10">{primaryCtaLabel}</span>
+                  {!prefersReduce && (
+                    <span className="pointer-events-none absolute inset-0">
+                      <span className="cta-sheen absolute -left-1/3 top-0 h-full w-1/3 bg-white/30 blur-md rotate-12 opacity-0 group-hover:opacity-100" />
+                    </span>
+                  )}
+                  <span className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-white/40 [mask-image:linear-gradient(white,transparent)]" />
+                </motion.a>
+
+                {/* Secondary */}
+                <motion.a
+                  href={secondaryCtaHref}
+                  className="group relative inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 px-5 py-3 font-medium bg-white/70 backdrop-blur supports-[backdrop-filter]:bg-white/60 overflow-hidden"
+                  whileHover={prefersReduce ? undefined : { y: -2 }}
+                  whileTap={{ scale: 0.985 }}
+                >
+                  <Play className="size-4 opacity-80" />
+                  <span className="relative z-10">{secondaryCtaLabel}</span>
+                  <span className="pointer-events-none absolute inset-0 bg-slate-50 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                </motion.a>
+              </motion.div>
+
+              {/* ⬅ NEW mobile: swipeable chips */}
+              <div className="sm:hidden mt-5 -mx-4 px-4">
+                <ul className="flex gap-2 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
+                  {chips.map((c) => (
+                    <li key={c} className="snap-start shrink-0">
+                      <span className="inline-block rounded-full bg-white px-3 py-1 text-[12px] font-semibold text-slate-800 border border-slate-200 shadow-sm">
+                        {c}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* ⬅ NEW mobile: mini stats */}
+              <div className="sm:hidden mt-4 grid grid-cols-3 gap-2">
+                {stats.map((s) => (
+                  <div key={s.v} className="rounded-lg border border-slate-200 bg-white/80 p-3 text-center shadow-sm">
+                    <div className="text-base font-extrabold text-slate-900 leading-none">{s.k}</div>
+                    <div className="text-[11px] text-slate-600">{s.v}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="col-span-12 lg:col-span-5 h-28 sm:h-36 md:h-72 lg:h-96" />
+          </div>
         </div>
       </div>
 
-      {/* Mobile sheet */}
-      <AnimatePresence>
-        {open && (
-          <>
-            {/* Overlay */}
-            <motion.button
-              aria-label="Tutup menu"
-              onClick={() => setOpen(false)}
-              className="fixed inset-0 z-40 bg-slate-900/30 backdrop-blur-sm"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, transition: { duration: 0.18 } }}
-              exit={{ opacity: 0, transition: { duration: 0.14 } }}
-            />
+      {/* ⬅ NEW mobile: bottom quick actions */}
+      <div className="sm:hidden fixed left-0 right-0 bottom-4 z-30 px-4">
+        <div className="mx-auto max-w-md flex items-center gap-2">
+          <a
+            href={primaryCtaHref}
+            className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-[#156773] text-white font-semibold py-3 shadow-lg"
+          >
+            <Phone className="size-4" />
+            Konsultasi
+          </a>
+          <a
+            href={secondaryCtaHref}
+            className="inline-flex items-center justify-center rounded-xl bg-white text-slate-900 font-semibold py-3 px-4 border border-slate-200 shadow-lg"
+          >
+            Lihat
+          </a>
+        </div>
+      </div>
 
-            {/* Lembaran menu turun dari bawah header */}
-            <motion.nav
-              role="dialog"
-              aria-modal="true"
-              aria-label="Navigasi"
-              className="fixed left-0 right-0 z-50 rounded-b-2xl bg-white shadow-lg ring-1 ring-slate-900/5 origin-top will-change-transform transform-gpu"
-              style={{ top: "var(--header-height, 64px)" }}
-              variants={variants.sheet}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <div className="px-4 sm:px-6 py-4">
-                <div className="flex items-center justify-between">
-                  <span className="font-semibold text-slate-900">Menu</span>
-                  <button
-                    aria-label="Tutup menu"
-                    onClick={() => setOpen(false)}
-                    className="inline-flex items-center justify-center rounded-md p-2 hover:bg-slate-100"
-                  >
-                    <X className="size-5" />
-                  </button>
-                </div>
+      {/* CTA animations (CSS) */}
+      <style>{`
+        @keyframes ctaSheen {
+          from { transform: translateX(-120%) rotate(20deg); }
+          to   { transform: translateX(220%)  rotate(20deg); }
+        }
+        @keyframes ctaBreathe {
+          0%,100% { box-shadow: 0 10px 18px rgba(21,103,115,.18); }
+          50%     { box-shadow: 0 14px 26px rgba(21,103,115,.28); }
+        }
+        .cta-breathe { animation: ctaBreathe 3.6s ease-in-out infinite; }
+        .group:hover .cta-sheen { animation: ctaSheen 1s ease forwards; }
 
-                <ul className="mt-2 divide-y divide-slate-100">
-                  {NAV.map((n, i) => (
-                    <motion.li
-                      key={n.href}
-                      className="py-3"
-                      variants={variants.item}
-                      initial="initial"
-                      animate="animate"
-                      exit="exit"
-                      transition={{ delay: prefersReduce ? 0 : 0.02 * i }}
-                    >
-                      <a
-                        href={n.href}
-                        onClick={() => setOpen(false)}
-                        className="block text-slate-800 font-medium"
-                      >
-                        {n.label}
-                      </a>
-                    </motion.li>
-                  ))}
-                </ul>
-
-                <div className="mt-3 pt-3 border-t border-slate-100">
-                  <a
-                    href="https://wa.me/62881023513057"
-                    onClick={() => setOpen(false)}
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#156773] text-white font-semibold px-4 py-3 shadow-md active:scale-[0.99]"
-                  >
-                    Konsultasi
-                  </a>
-                </div>
-              </div>
-            </motion.nav>
-          </>
-        )}
-      </AnimatePresence>
-    </header>
+        @media (prefers-reduced-motion: reduce) {
+          .cta-breathe, .cta-sheen { animation: none !important; }
+        }
+      `}</style>
+    </section>
   );
 }
