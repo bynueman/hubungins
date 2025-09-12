@@ -29,14 +29,16 @@ export default function Header() {
         <a href="/#hero" className="flex items-center gap-2 select-none min-w-0">
           <img src={logo} alt="Hubung’ins" className="h-7 sm:h-8 w-auto" />
           <span
-            className="font-bold text-lg sm:text-xl truncate"
-            style={{
-              fontFamily: '"Helvetica Now", Helvetica, Arial, sans-serif',
-              userSelect: "none",
-            }}
-          >
-            Hubung’ins
-          </span>
+  className="font-bold text-lg sm:text-xl truncate"
+  style={{
+    fontFamily: '"Roca", Helvetica, Arial, sans-serif',
+    userSelect: "none",
+    fontSize: "24px"
+  }}
+>
+  Hubung’ins
+</span>
+
         </a>
 
         {/* Menu desktop (tampil mulai >= lg) */}

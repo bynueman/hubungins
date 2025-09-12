@@ -1,35 +1,41 @@
+// src/ServicesSection.jsx
 import React from "react";
 import { PhoneCall } from "lucide-react";
+
+// ✅ karena file ini di src/, pakai "./assets/..."
+import podcastProd from "./assets/services/podcastprod.png";
+import contentProd from "./assets/services/contentprod.png";
 
 export default function ServicesSection() {
   const services = [
     {
       title: "Podcast Production",
       description:
-        "Produksi podcast profesional dengan kualitas audio terbaik dan konten menarik.",
-      image: "public/services/podcastprod.png",
+        "Produksi podcast profesional dengan kualitas audio terbaik, alur konten yang engaging, serta potongan clipper (shorts/highlight) siap upload untuk IG, TikTok, dan Reels.",
+      image: podcastProd,
+      chips: ["Pra-produksi", "Recording", "Editing", "Clipper"], // ← kamu bisa hapus "Clipper" jika tak perlu
     },
     {
       title: "Content Production",
       description:
-        "Pembuatan konten video dan audio berkualitas tinggi yang sesuai dengan kebutuhan Anda.",
-      image: "public/services/contentprod.png",
+        "Produksi video/shorts kreatif untuk IG & TikTok: dari konsep, shooting, hingga editing.",
+      image: contentProd,
+      chips: ["Scripting", "Shooting", "Editing"],
     },
   ];
 
   return (
     <section
-  id="services"
-  className="
-    relative overflow-hidden container mx-auto max-w-7xl
-    px-4 sm:px-6
-    pt-6 sm:pt-10 pb-6 sm:pb-16
-    md:mt-0                        /* <-- hapus margin negatifnya */
-    scroll-mt-24 sm:scroll-mt-28 lg:scroll-mt-32  /* <-- offset utk header fixed */
-  "
-  style={{ fontFamily: '"Helvetica Now", Helvetica, Arial, sans-serif' }}
->
-      {/* === BACKDROP: radial glow + grid halus (brand #156773) === */}
+      id="services"
+      className="
+        relative overflow-hidden container mx-auto max-w-7xl
+        px-4 sm:px-6
+        pt-8 sm:pt-12 pb-10 sm:pb-16
+        scroll-mt-24 sm:scroll-mt-28 lg:scroll-mt-32
+      "
+      style={{ fontFamily: '"Helvetica Now", Helvetica, Arial, sans-serif' }}
+    >
+      {/* === BACKDROP: brand glow + grid halus === */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10"
@@ -51,52 +57,105 @@ export default function ServicesSection() {
         </defs>
         <rect width="1400" height="320" fill="url(#services-grid)" />
       </svg>
-      {/* === END BACKDROP === */}
 
-      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-center">
+      {/* Heading */}
+      <h2 className="text-[clamp(1.6rem,4vw,2.5rem)] font-extrabold tracking-tight text-center">
         Layanan Kami
       </h2>
-      <p className="mt-3 text-center text-slate-600">
+      <p className="mt-2 text-center text-slate-600 text-[clamp(.95rem,1.3vw,1.05rem)]">
         Solusi yang paling sering dipesan klien kami.
       </p>
 
-      <div className="mt-10 sm:mt-12 grid gap-8 grid-cols-1 sm:grid-cols-2 max-w-3xl mx-auto">
-        {services.map(({ title, description, image }, i) => (
-          <div
+      {/* Grid kartu */}
+      <div className="mt-8 sm:mt-10 grid items-stretch gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 max-w-4xl mx-auto">
+        {services.map(({ title, description, image, chips }, i) => (
+          <article
             key={i}
             className="
-              group relative flex flex-col items-center text-center
-              rounded-2xl bg-white p-8
-              shadow-[0_10px_24px_rgba(21,103,115,0.14)]
-              hover:shadow-[0_18px_38px_rgba(21,103,115,0.24)]
-              transition-transform duration-300
-              hover:-translate-y-1 hover:scale-[1.02]
-              card-glow
+              group relative h-full rounded-2xl p-[1px]
+              bg-gradient-to-br from-[#156773] via-[#23A3B3] to-transparent
+              shadow-[0_8px_20px_rgba(2,6,23,0.08)]
+              hover:shadow-[0_12px_26px_rgba(2,6,23,0.12)]
+              transition-transform duration-300 hover:-translate-y-0.5 hover:scale-[1.01]
             "
           >
-            {/* soft glow sweep on hover */}
-            <span className="
-              pointer-events-none absolute inset-0 rounded-2xl
-              bg-gradient-to-r from-[#156773]/0 via-[#156773]/10 to-[#156773]/0
-              opacity-0 blur-xl transition-opacity duration-500
-              group-hover:opacity-100
-            " />
-            {/* thin highlight strip (aksen) */}
-            <span className="pointer-events-none absolute -top-px left-8 right-8 h-[2px] bg-gradient-to-r from-transparent via-[#156773] to-transparent opacity-70" />
+            {/* inner card */}
+            <div
+              className="
+                relative rounded-2xl bg-white h-full overflow-hidden
+                p-6 sm:p-7 md:p-8
+                ring-1 ring-slate-200/60 transition
+                group-hover:ring-[#156773]/25
+                flex flex-col
+              "
+            >
+              {/* sheen / glow */}
+              <span
+                className="
+                  pointer-events-none absolute inset-0
+                  bg-gradient-to-r from-transparent via-[#156773]/10 to-transparent
+                  opacity-0 blur-lg transition-opacity duration-700
+                  group-hover:opacity-100
+                "
+              />
+              {/* highlight strip */}
+              <span className="pointer-events-none absolute -top-px left-10 right-10 h-[2px] bg-gradient-to-r from-transparent via-[#156773] to-transparent opacity-70" />
 
-            <img
-              src={image}
-              alt={title}
-              className="mb-4 w-16 h-16 object-contain rounded-xl shadow-sm border border-slate-100 bg-white"
-              loading="lazy"
-            />
-            <h3 className="text-xl font-semibold text-[#156773]">{title}</h3>
-            <p className="mt-2 text-slate-700">{description}</p>
-          </div>
+              {/* icon / image */}
+              <div className="relative mb-4 sm:mb-5">
+                <div className="absolute inset-0 -z-10 rounded-xl bg-[radial-gradient(circle_at_30%_30%,rgba(21,103,115,0.18),transparent_55%)]" />
+                <img
+                  src={image}
+                  alt={title}
+                  className="
+                    w-14 h-14 sm:w-16 sm:h-16 object-contain rounded-xl
+                    border border-slate-100 bg-white shadow-sm
+                    transition-transform duration-500
+                    group-hover:-translate-y-1 group-hover:scale-[1.03]
+                    animate-float-slow
+                  "
+                  loading="lazy"
+                />
+              </div>
+
+              {/* copy */}
+              <h3 className="text-[clamp(1.05rem,1.6vw,1.25rem)] font-extrabold text-[#156773]">
+                {title}
+              </h3>
+              <p className="mt-2 text-slate-700 leading-relaxed text-[clamp(.95rem,1.2vw,1.05rem)]">
+                {description}
+              </p>
+
+              {/* chips */}
+              <div className="mt-4 sm:mt-5 flex flex-wrap gap-2">
+                {chips.map((b) => (
+                  <span
+                    key={b}
+                    className="
+                      rounded-full border border-slate-200 bg-slate-50
+                      px-3 py-1 text-[11.5px] sm:text-xs font-semibold text-slate-700
+                    "
+                  >
+                    {b}
+                  </span>
+                ))}
+              </div>
+
+              {/* bottom gradient pad subtle (aksi visual) */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute left-0 right-0 bottom-0 h-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                style={{
+                  background:
+                    "linear-gradient(to top, rgba(21,103,115,0.07), rgba(21,103,115,0))",
+                }}
+              />
+            </div>
+          </article>
         ))}
       </div>
 
-      {/* CTA sama seperti sebelumnya */}
+      {/* CTA */}
       <div className="flex justify-center mt-10">
         <a
           href="https://wa.me/62881023513057"
@@ -109,8 +168,7 @@ export default function ServicesSection() {
             transition active:scale-[0.985]
           "
           style={{
-            background:
-              "linear-gradient(90deg, #156773, #1A8A98, #23A3B3, #156773)",
+            background: "linear-gradient(90deg, #156773, #1A8A98, #23A3B3, #156773)",
             backgroundSize: "200% 100%",
           }}
           onMouseEnter={(e) => (e.currentTarget.style.backgroundPosition = "100% 0")}
@@ -124,15 +182,16 @@ export default function ServicesSection() {
         </a>
       </div>
 
-      {/* Animasi shadow breathing (halus) */}
+      {/* Animasi & helpers */}
       <style>{`
-        @keyframes cardGlow {
-          0%,100% { box-shadow: 0 10px 24px rgba(21,103,115,.14); }
-          50%     { box-shadow: 0 16px 36px rgba(21,103,115,.22); }
+        @keyframes floatY {
+          0%,100% { transform: translateY(0); }
+          50%     { transform: translateY(-6px); }
         }
-        .card-glow { animation: cardGlow 4.2s ease-in-out infinite; }
+        .animate-float-slow { animation: floatY 4.6s ease-in-out infinite; }
+
         @media (prefers-reduced-motion: reduce) {
-          .card-glow { animation: none; }
+          .animate-float-slow { animation: none !important; }
         }
       `}</style>
     </section>
