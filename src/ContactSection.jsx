@@ -114,7 +114,7 @@ export default function ContactSection() {
               </a>
 
               <a
-                href="mailto:hubugins@gmail.com"
+                href="mailto:hubungins@gmail.com"
                 className="
                   group relative rounded-2xl p-[1px]
                   bg-gradient-to-br from-[#156773] via-[#23A3B3] to-[#156773]
@@ -129,7 +129,7 @@ export default function ContactSection() {
                   </div>
                   <div className="flex-1">
                     <div className="font-semibold leading-tight text-[#0f3f47]">Email</div>
-                    <div className="text-sm text-slate-600">hubugins@gmail.com</div>
+                    <div className="text-sm text-slate-600">hubungins@gmail.com</div>
                   </div>
                   <ExternalLink className="size-4 text-slate-500" />
                 </div>
