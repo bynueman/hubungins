@@ -246,11 +246,11 @@ export default function Hero({
                 initial="hidden"
                 animate="show"
                 transition={{ delay: 0.16, duration: 0.5, ease: "easeOut" }}
-                className="mt-6 sm:mt-8 flex flex-row gap-4 items-center justify-center sm:justify-start"
+                className="mt-6 sm:mt-8 flex flex-row gap-3 items-center justify-center sm:justify-start" // ✨ Gap dikurangi
               >
                 <motion.a
                   href={primaryCtaHref}
-                  className="group relative inline-flex items-center justify-center gap-2 rounded-xl bg-[#156773] px-4 py-2 font-semibold text-white overflow-hidden shadow-md cta-breathe" // ✨ Padding diubah
+                  className="group relative flex-1 whitespace-nowrap inline-flex items-center justify-center gap-2 rounded-xl bg-[#156773] px-4 py-2 font-semibold text-white overflow-hidden shadow-md cta-breathe" // ✨ flex-1 dan whitespace-nowrap
                   whileHover={prefersReduce ? undefined : { y: -2, scale: 1.02 }}
                   whileTap={{ scale: 0.985 }}
                 >
@@ -266,7 +266,7 @@ export default function Hero({
 
                 <motion.a
                   href={secondaryCtaHref}
-                  className="group relative inline-flex items-center justify-center gap-2 rounded-xl border border-[#156773]/30 px-4 py-2 font-semibold bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 overflow-hidden text-[#0f172a]" // ✨ Padding diubah
+                  className="group relative whitespace-nowrap inline-flex items-center justify-center gap-2 rounded-xl border border-[#156773]/30 px-4 py-2 font-semibold bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 overflow-hidden text-[#0f172a]" // ✨ whitespace-nowrap
                   whileHover={prefersReduce ? undefined : { y: -2 }}
                   whileTap={{ scale: 0.985 }}
                 >
