@@ -19,7 +19,7 @@ export default function Hero({
     </>
   ),
   subtitle = "Spesialis Konten Video Singkat Paling Asik No.1 di Indonesia",
-  primaryCtaLabel = "Konsultasi",
+  primaryCtaLabel = "Konsultasi Gratis",
   primaryCtaHref = "https://wa.me/62881023513057",
   secondaryCtaLabel = "Lihat Portofolio",
   secondaryCtaHref = "#portfolio",
@@ -37,7 +37,6 @@ export default function Hero({
   const logoOpacity = useTransform(scrollYProgress, [0, 0.04], [1, 0]);
   const logoY = useTransform(scrollYProgress, [0, 0.04], ["0%", "-150%"]);
   
-  // ✨ 1. Animasi parallax untuk konten saat di-scroll
   const contentY = useTransform(scrollYProgress, [0, 0.15], ["0%", "-25%"]);
 
 
@@ -80,7 +79,7 @@ export default function Hero({
     () => [
       { k: "30+", v: "Klien" },
       { k: "100+", v: "Video" },
-      { k: "7 jt+", v: "Views" },
+      { k: "60 jt+", v: "Views" },
     ],
     []
   );
@@ -199,7 +198,6 @@ export default function Hero({
       <div className="relative z-20 w-full">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 pt-24 sm:pt-28 md:pt-40 pb-2 md:pb-18">
           <div className="grid grid-cols-12 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-start">
-            {/* ✨ 2. Terapkan style parallax pada kontainer konten */}
             <motion.div
               className="col-span-12 lg:col-span-7"
               style={{ y: prefersReduce ? 0 : contentY }}
@@ -248,11 +246,11 @@ export default function Hero({
                 initial="hidden"
                 animate="show"
                 transition={{ delay: 0.16, duration: 0.5, ease: "easeOut" }}
-                className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 items-center sm:items-start justify-center sm:justify-start"
+                className="mt-6 sm:mt-8 flex flex-row gap-4 items-center justify-center sm:justify-start"
               >
                 <motion.a
                   href={primaryCtaHref}
-                  className="group relative inline-flex items-center justify-center gap-2 rounded-xl bg-[#156773] px-5 py-3 font-semibold text-white overflow-hidden shadow-md cta-breathe"
+                  className="group relative inline-flex items-center justify-center gap-2 rounded-xl bg-[#156773] px-4 py-2 font-semibold text-white overflow-hidden shadow-md cta-breathe" // ✨ Padding diubah
                   whileHover={prefersReduce ? undefined : { y: -2, scale: 1.02 }}
                   whileTap={{ scale: 0.985 }}
                 >
@@ -268,7 +266,7 @@ export default function Hero({
 
                 <motion.a
                   href={secondaryCtaHref}
-                  className="group relative inline-flex items-center justify-center gap-2 rounded-xl border border-[#156773]/30 px-5 py-3 font-medium bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 overflow-hidden text-[#0f172a]"
+                  className="group relative inline-flex items-center justify-center gap-2 rounded-xl border border-[#156773]/30 px-4 py-2 font-semibold bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 overflow-hidden text-[#0f172a]" // ✨ Padding diubah
                   whileHover={prefersReduce ? undefined : { y: -2 }}
                   whileTap={{ scale: 0.985 }}
                 >
@@ -340,7 +338,7 @@ export default function Hero({
                 className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-[#156773] text-white font-semibold py-3 shadow-lg"
               >
                 <Phone className="size-4" />
-                Konsultasi
+                Konsultasi Gratis
               </a>
               <a
                 href={secondaryCtaHref}
