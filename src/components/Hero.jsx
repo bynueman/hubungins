@@ -6,7 +6,11 @@ import logo from "../assets/logo.png";
 const ROTATING = ["Cepat", "Asik", "Strategis", "Kreatif"]; // ⬅ NEW mobile
 
 export default function Hero({
-  title = <>Kalo Soal Ngonten, <br className="hidden sm:block" /> Gampang Dihubungin!</>,
+  title = (
+    <>
+      Kalo Soal Ngonten, <br className="hidden sm:block" /> Gampang Dihubungin!
+    </>
+  ),
   subtitle = "Spesialis Konten Video Singkat Paling Asik No.1 di Indonesia",
   primaryCtaLabel = "Konsultasi",
   primaryCtaHref = "https://wa.me/62881023513057",
@@ -27,7 +31,8 @@ export default function Hero({
       const { innerWidth: w, innerHeight: h } = window;
       const nx = (e.clientX / w) * 2 - 1;
       const ny = (e.clientY / h) * 2 - 1;
-      mx.set(nx); my.set(ny);
+      mx.set(nx);
+      my.set(ny);
     };
     window.addEventListener("pointermove", onMove, { passive: true });
     return () => window.removeEventListener("pointermove", onMove);
@@ -65,14 +70,14 @@ export default function Hero({
       className="relative min-h-[70svh] sm:min-h-[70vh] md:min-h-[75vh] flex items-center overflow-visible pt-[max(4.5rem,env(safe-area-inset-top))] sm:pt-24 pb-8 md:pb-12"
       style={{ fontFamily: '"Helvetica Now", Helvetica, Arial, sans-serif' }}
     >
-      {/* === Mobile-only ambient: spotlight + grid === */}
+      {/* === Mobile-only ambient: spotlight + grid (TEAL) === */}
       <div className="sm:hidden absolute inset-0 -z-10">
         {/* spotlight */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(120vw 60vw at 70% 10%, rgba(21,103,115,0.18), transparent 55%), radial-gradient(80vw 50vw at 10% 60%, rgba(21,103,115,0.12), transparent 60%)",
+              "radial-gradient(120vw 60vw at 50% -10%, rgba(21,103,115,0.22), transparent 60%), radial-gradient(90vw 60vw at 50% 80%, rgba(21,103,115,0.12), transparent 70%)",
           }}
         />
         {/* subtle grid */}
@@ -93,16 +98,16 @@ export default function Hero({
         aria-hidden
         className="hidden sm:block pointer-events-none select-none absolute -right-10 -top-1 w-[480px] md:w-[600px] lg:w-[700px] -rotate-8 z-10"
       />
-      {/* Logo kecil (mobile) */}
+      {/* Logo kecil (mobile) — dipusatkan */}
       <img
         src={logo}
         alt=""
         aria-hidden
-        className="sm:hidden pointer-events-none select-none absolute right-4 w-[64px] h-auto rounded-xl shadow-md opacity-90"
-        style={{ top: "calc(var(--header-height, 64px) + 25px)" }}
+        className="sm:hidden pointer-events-none select-none absolute left-1/2 -translate-x-1/2 w-[68px] h-auto rounded-xl shadow-md opacity-95"
+        style={{ top: "calc(var(--header-height, 64px) + 18px)" }}
       />
 
-      {/* === Background bubbles (tetap) === */}
+      {/* === Background bubbles (tetap TEAL) === */}
       <motion.div
         className="absolute left-0 top-0 w-full h-full pointer-events-none z-0"
         initial={prefersReduce ? { opacity: 1 } : { opacity: 0 }}
@@ -157,15 +162,19 @@ export default function Hero({
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 pt-20 sm:pt-24 md:pt-36 pb-2 md:pb-18">
           <div className="grid grid-cols-12 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-start">
             <div className="col-span-12 lg:col-span-7">
-              <motion.h1 variants={reveal} initial="hidden" animate="show"
-                className="text-[clamp(2rem,6vw,3.75rem)] sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.08] tracking-tight">
+              <motion.h1
+                variants={reveal}
+                initial="hidden"
+                animate="show"
+                className="text-[clamp(2rem,6vw,3.75rem)] sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.08] tracking-tight text-center sm:text-left"
+              >
                 {title}
               </motion.h1>
 
               {/* Subtitle: desktop pakai teks biasa, mobile dapat rotating */}
-              <div className="mt-4 sm:mt-5 max-w-[65ch]">
+              <div className="mt-4 sm:mt-5 max-w-[65ch] mx-auto sm:mx-0">
                 {/* mobile rotating */}
-                <div className="sm:hidden text-slate-900 text-base">
+                <div className="sm:hidden text-slate-900 text-base text-center">
                   <span>Spesialis Konten Video </span>
                   <span className="inline-flex items-center gap-1 font-bold">
                     <AnimatePresence mode="wait" initial={false}>
@@ -180,7 +189,7 @@ export default function Hero({
                         {ROTATING[rotIdx]}
                       </motion.span>
                     </AnimatePresence>
-                    <Sparkles className="size-4" />
+                    <Sparkles className="size-4 text-[#156773]" />
                   </span>
                 </div>
                 {/* desktop original */}
@@ -196,9 +205,12 @@ export default function Hero({
               </div>
 
               {/* CTA */}
-              <motion.div variants={reveal} initial="hidden" animate="show"
+              <motion.div
+                variants={reveal}
+                initial="hidden"
+                animate="show"
                 transition={{ delay: 0.16, duration: 0.5, ease: "easeOut" }}
-                className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4"
+                className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 items-center sm:items-start justify-center sm:justify-start"
               >
                 {/* Primary */}
                 <motion.a
@@ -220,22 +232,22 @@ export default function Hero({
                 {/* Secondary */}
                 <motion.a
                   href={secondaryCtaHref}
-                  className="group relative inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 px-5 py-3 font-medium bg-white/70 backdrop-blur supports-[backdrop-filter]:bg-white/60 overflow-hidden"
+                  className="group relative inline-flex items-center justify-center gap-2 rounded-xl border border-[#156773]/30 px-5 py-3 font-medium bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 overflow-hidden text-[#0f172a]"
                   whileHover={prefersReduce ? undefined : { y: -2 }}
                   whileTap={{ scale: 0.985 }}
                 >
-                  <Play className="size-4 opacity-80" />
+                  <Play className="size-4 opacity-80 text-[#156773]" />
                   <span className="relative z-10">{secondaryCtaLabel}</span>
-                  <span className="pointer-events-none absolute inset-0 bg-slate-50 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  <span className="pointer-events-none absolute inset-0 bg-[#156773]/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                 </motion.a>
               </motion.div>
 
               {/* ⬅ NEW mobile: swipeable chips */}
               <div className="sm:hidden mt-5 -mx-4 px-4">
-                <ul className="flex gap-2 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
+                <ul className="flex gap-2 overflow-x-auto snap-x snap-mandatory scrollbar-hide justify-center">
                   {chips.map((c) => (
                     <li key={c} className="snap-start shrink-0">
-                      <span className="inline-block rounded-full bg-white px-3 py-1 text-[12px] font-semibold text-slate-800 border border-slate-200 shadow-sm">
+                      <span className="inline-block rounded-full bg-white px-3 py-1 text-[12px] font-semibold text-slate-800 border border-[#156773]/20 shadow-sm">
                         {c}
                       </span>
                     </li>
@@ -244,9 +256,9 @@ export default function Hero({
               </div>
 
               {/* ⬅ NEW mobile: mini stats */}
-              <div className="sm:hidden mt-4 grid grid-cols-3 gap-2">
+              <div className="sm:hidden mt-4 grid grid-cols-3 gap-2 max-w-sm mx-auto">
                 {stats.map((s) => (
-                  <div key={s.v} className="rounded-lg border border-slate-200 bg-white/80 p-3 text-center shadow-sm">
+                  <div key={s.v} className="rounded-lg border border-[#156773]/25 bg-white/85 p-3 text-center shadow-sm">
                     <div className="text-base font-extrabold text-slate-900 leading-none">{s.k}</div>
                     <div className="text-[11px] text-slate-600">{s.v}</div>
                   </div>
@@ -271,7 +283,7 @@ export default function Hero({
           </a>
           <a
             href={secondaryCtaHref}
-            className="inline-flex items-center justify-center rounded-xl bg-white text-slate-900 font-semibold py-3 px-4 border border-slate-200 shadow-lg"
+            className="inline-flex items-center justify-center rounded-xl bg-white text-slate-900 font-semibold py-3 px-4 border border-[#156773]/25 shadow-lg"
           >
             Lihat
           </a>

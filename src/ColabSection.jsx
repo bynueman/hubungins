@@ -154,15 +154,12 @@ export default function ColabSection() {
     <section className="w-full py-12">
       <div className="mb-8">
         <h2
-          className="text-2xl sm:text-3xl font-bold text-center tracking-wide"
-          style={{
-            fontFamily: `"Helvetica Now", Helvetica, Arial, sans-serif`,
-            letterSpacing: "0.06em",
-            color: "#000000ff",
-          }}
-        >
-          Kolaborasi & Client Kami
-        </h2>
+  className="not-prose relative z-20 text-2xl sm:text-3xl font-bold text-center tracking-wide !text-[#156773]"
+  style={{ fontFamily: '"Helvetica Now", Helvetica, Arial, sans-serif', letterSpacing: '0.06em' }}
+>
+  Kolaborasi & Client Kami
+</h2>
+
       </div>
 
       <div className="relative max-w-full py-2 md:py-4">
