@@ -36,6 +36,10 @@ export default function Hero({
 
   const logoOpacity = useTransform(scrollYProgress, [0, 0.04], [1, 0]);
   const logoY = useTransform(scrollYProgress, [0, 0.04], ["0%", "-150%"]);
+  
+  // ✨ 1. Animasi parallax untuk konten saat di-scroll
+  const contentY = useTransform(scrollYProgress, [0, 0.15], ["0%", "-25%"]);
+
 
   const [showQuickActions, setShowQuickActions] = useState(false);
   useEffect(() => {
@@ -193,14 +197,18 @@ export default function Hero({
 
       {/* === HERO CONTENT === */}
       <div className="relative z-20 w-full">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6 pt-20 sm:pt-24 md:pt-36 pb-2 md:pb-18">
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 pt-24 sm:pt-28 md:pt-40 pb-2 md:pb-18">
           <div className="grid grid-cols-12 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-start">
-            <div className="col-span-12 lg:col-span-7">
+            {/* ✨ 2. Terapkan style parallax pada kontainer konten */}
+            <motion.div
+              className="col-span-12 lg:col-span-7"
+              style={{ y: prefersReduce ? 0 : contentY }}
+            >
               <motion.h1
                 variants={reveal}
                 initial="hidden"
                 animate="show"
-                className="text-[clamp(2rem,6vw,3.75rem)] sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.08] tracking-tight text-center sm:text-left text-[#156773]" // ✨ Warna ditambahkan di sini
+                className="text-[clamp(2rem,6vw,3.75rem)] sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.08] tracking-tight text-center sm:text-left text-[#156773]"
               >
                 {title}
               </motion.h1>
@@ -310,7 +318,7 @@ export default function Hero({
                   </motion.div>
                 ))}
               </motion.div>
-            </div>
+            </motion.div>
 
             <div className="col-span-12 lg:col-span-5 h-28 sm:h-36 md:h-72 lg:h-96" />
           </div>

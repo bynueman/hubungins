@@ -102,8 +102,8 @@ export default function Header() {
             }`}
           />
           <span
-            className="font-bold text-lg sm:text-xl truncate"
-            style={{ fontFamily: '"Roca", Helvetica, Arial, sans-serif', fontSize: "24px" }}
+            className="font-bold text-lg sm:text-xl truncate text-[#156773]"
+            style={{ fontFamily: '"Roca", Helvetica, Arial, sans-serif', fontSize: "24px"  }}
           >
             Hubung’ins
           </span>
@@ -144,7 +144,7 @@ export default function Header() {
             <>
               {/* Lapisan overlay (motion.div) telah dihapus dari sini */}
               <motion.nav
-                className="lg:hidden fixed top-24 left-4 right-4 z-60 bg-white/80 backdrop-blur-lg border border-white/20 shadow-2xl rounded-2xl p-6"
+                className="lg:hidden fixed top-24 right-4 z-60 w-5/6 max-w-sm bg-white border border-slate-200 shadow-2xl rounded-2xl p-6" // ✨ Perubahan di sini
                 variants={menuVariants}
                 initial="closed"
                 animate="open"
