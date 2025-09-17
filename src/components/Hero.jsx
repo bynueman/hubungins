@@ -1,14 +1,21 @@
-import { motion, useMotionValue, useTransform, useReducedMotion, AnimatePresence } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  useReducedMotion,
+  AnimatePresence,
+  useScroll,
+} from "framer-motion";
 import { Phone, Play, Sparkles } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import logo from "../assets/logo.png";
 
-const ROTATING = ["Cepat", "Asik", "Strategis", "Kreatif"]; // ⬅ NEW mobile
+const ROTATING = ["Cepat", "Asik", "Strategis", "Kreatif"];
 
 export default function Hero({
   title = (
     <>
-      Kalo Soal Ngonten, <br className="hidden sm:block" /> Gampang Dihubungin!
+      Kalo Soal Ngonten, <br className="hidden sm:block " /> Gampang Dihubungin!
     </>
   ),
   subtitle = "Spesialis Konten Video Singkat Paling Asik No.1 di Indonesia",
@@ -24,6 +31,18 @@ export default function Hero({
   const ty1 = useTransform(my, [-1, 1], ["-1.5%", "1.5%"]);
   const tx2 = useTransform(mx, [-1, 1], ["1.2%", "-1.2%"]);
   const ty2 = useTransform(my, [-1, 1], ["0.8%", "-0.8%"]);
+
+  const { scrollY, scrollYProgress } = useScroll();
+
+  const logoOpacity = useTransform(scrollYProgress, [0, 0.04], [1, 0]);
+  const logoY = useTransform(scrollYProgress, [0, 0.04], ["0%", "-150%"]);
+
+  const [showQuickActions, setShowQuickActions] = useState(false);
+  useEffect(() => {
+    return scrollY.on("change", (latest) => {
+      setShowQuickActions(latest > 350);
+    });
+  }, [scrollY]);
 
   useEffect(() => {
     if (prefersReduce) return;
@@ -43,14 +62,12 @@ export default function Hero({
     show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
   };
 
-  // ⬅ NEW mobile: rotating word for subtitle
   const [rotIdx, setRotIdx] = useState(0);
   useEffect(() => {
     const t = setInterval(() => setRotIdx((i) => (i + 1) % ROTATING.length), 1800);
     return () => clearInterval(t);
   }, []);
 
-  // ⬅ NEW mobile: chips & stats data
   const chips = useMemo(
     () => ["UGC", "Ads Creative", "IG/TikTok Reels", "Konten Edukasi", "Event Coverage", "Brand Strategy"],
     []
@@ -58,11 +75,26 @@ export default function Hero({
   const stats = useMemo(
     () => [
       { k: "30+", v: "Klien" },
-      { k: "300+", v: "Video" },
+      { k: "100+", v: "Video" },
       { k: "7 jt+", v: "Views" },
     ],
     []
   );
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+        ease: "easeOut",
+      },
+    },
+  };
+  const staggerItem = {
+    hidden: { opacity: 0, y: 15 },
+    show: { opacity: 1, y: 0 },
+  };
 
   return (
     <section
@@ -72,15 +104,13 @@ export default function Hero({
     >
       {/* === Mobile-only ambient: spotlight + grid (TEAL) === */}
       <div className="sm:hidden absolute inset-0 -z-10">
-        {/* spotlight */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(120vw 60vw at 50% -10%, rgba(21,103,115,0.22), transparent 60%), radial-gradient(90vw 60vw at 50% 80%, rgba(21,103,115,0.12), transparent 70%)",
+              "radial-gradient(120vw 60vw at 50% -10%, rgba(21,103,115,0.22)), radial-gradient(90vw 60vw at 50% 80%, rgba(21,103,115,0.12), transparent 70%)",
           }}
         />
-        {/* subtle grid */}
         <div
           className="absolute inset-0 opacity-[0.08]"
           style={{
@@ -99,12 +129,16 @@ export default function Hero({
         className="hidden sm:block pointer-events-none select-none absolute -right-10 -top-1 w-[480px] md:w-[600px] lg:w-[700px] -rotate-8 z-10"
       />
       {/* Logo kecil (mobile) — dipusatkan */}
-      <img
+      <motion.img
         src={logo}
         alt=""
         aria-hidden
-        className="sm:hidden pointer-events-none select-none absolute left-1/2 -translate-x-1/2 w-[68px] h-auto rounded-xl shadow-md opacity-95"
-        style={{ top: "calc(var(--header-height, 64px) + 18px)" }}
+        className="sm:hidden pointer-events-none select-none absolute left-1/2 -translate-x-1/2 w-[68px] h-auto rounded-xl opacity-95"
+        style={{
+          top: "calc(var(--header-height, 64px) + 18px)",
+          opacity: prefersReduce ? 1 : logoOpacity,
+          y: prefersReduce ? 0 : logoY,
+        }}
       />
 
       {/* === Background bubbles (tetap TEAL) === */}
@@ -166,14 +200,12 @@ export default function Hero({
                 variants={reveal}
                 initial="hidden"
                 animate="show"
-                className="text-[clamp(2rem,6vw,3.75rem)] sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.08] tracking-tight text-center sm:text-left"
+                className="text-[clamp(2rem,6vw,3.75rem)] sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.08] tracking-tight text-center sm:text-left text-[#156773]" // ✨ Warna ditambahkan di sini
               >
                 {title}
               </motion.h1>
 
-              {/* Subtitle: desktop pakai teks biasa, mobile dapat rotating */}
               <div className="mt-4 sm:mt-5 max-w-[65ch] mx-auto sm:mx-0">
-                {/* mobile rotating */}
                 <div className="sm:hidden text-slate-900 text-base text-center">
                   <span>Spesialis Konten Video </span>
                   <span className="inline-flex items-center gap-1 font-bold">
@@ -192,7 +224,6 @@ export default function Hero({
                     <Sparkles className="size-4 text-[#156773]" />
                   </span>
                 </div>
-                {/* desktop original */}
                 <motion.p
                   variants={reveal}
                   initial="hidden"
@@ -204,7 +235,6 @@ export default function Hero({
                 </motion.p>
               </div>
 
-              {/* CTA */}
               <motion.div
                 variants={reveal}
                 initial="hidden"
@@ -212,7 +242,6 @@ export default function Hero({
                 transition={{ delay: 0.16, duration: 0.5, ease: "easeOut" }}
                 className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 items-center sm:items-start justify-center sm:justify-start"
               >
-                {/* Primary */}
                 <motion.a
                   href={primaryCtaHref}
                   className="group relative inline-flex items-center justify-center gap-2 rounded-xl bg-[#156773] px-5 py-3 font-semibold text-white overflow-hidden shadow-md cta-breathe"
@@ -229,7 +258,6 @@ export default function Hero({
                   <span className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-white/40 [mask-image:linear-gradient(white,transparent)]" />
                 </motion.a>
 
-                {/* Secondary */}
                 <motion.a
                   href={secondaryCtaHref}
                   className="group relative inline-flex items-center justify-center gap-2 rounded-xl border border-[#156773]/30 px-5 py-3 font-medium bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 overflow-hidden text-[#0f172a]"
@@ -242,28 +270,46 @@ export default function Hero({
                 </motion.a>
               </motion.div>
 
-              {/* ⬅ NEW mobile: swipeable chips */}
               <div className="sm:hidden mt-5 -mx-4 px-4">
-                <ul className="flex gap-2 overflow-x-auto snap-x snap-mandatory scrollbar-hide justify-center">
+                <motion.ul
+                  className="flex gap-2 overflow-x-auto snap-x snap-mandatory scrollbar-hide justify-center"
+                  variants={staggerContainer}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true, amount: 0.4 }}
+                >
                   {chips.map((c) => (
-                    <li key={c} className="snap-start shrink-0">
+                    <motion.li
+                      key={c}
+                      className="snap-start shrink-0"
+                      variants={staggerItem}
+                    >
                       <span className="inline-block rounded-full bg-white px-3 py-1 text-[12px] font-semibold text-slate-800 border border-[#156773]/20 shadow-sm">
                         {c}
                       </span>
-                    </li>
+                    </motion.li>
                   ))}
-                </ul>
+                </motion.ul>
               </div>
 
-              {/* ⬅ NEW mobile: mini stats */}
-              <div className="sm:hidden mt-4 grid grid-cols-3 gap-2 max-w-sm mx-auto">
+              <motion.div
+                className="sm:hidden mt-4 grid grid-cols-3 gap-2 max-w-sm mx-auto"
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.5 }}
+              >
                 {stats.map((s) => (
-                  <div key={s.v} className="rounded-lg border border-[#156773]/25 bg-white/85 p-3 text-center shadow-sm">
+                  <motion.div
+                    key={s.v}
+                    className="rounded-lg border border-[#156773]/25 bg-white/85 p-3 text-center shadow-sm"
+                    variants={staggerItem}
+                  >
                     <div className="text-base font-extrabold text-slate-900 leading-none">{s.k}</div>
                     <div className="text-[11px] text-slate-600">{s.v}</div>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             </div>
 
             <div className="col-span-12 lg:col-span-5 h-28 sm:h-36 md:h-72 lg:h-96" />
@@ -271,26 +317,34 @@ export default function Hero({
         </div>
       </div>
 
-      {/* ⬅ NEW mobile: bottom quick actions */}
-      <div className="sm:hidden fixed left-0 right-0 bottom-4 z-30 px-4">
-        <div className="mx-auto max-w-md flex items-center gap-2">
-          <a
-            href={primaryCtaHref}
-            className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-[#156773] text-white font-semibold py-3 shadow-lg"
+      <AnimatePresence>
+        {showQuickActions && (
+          <motion.div
+            className="sm:hidden fixed left-0 right-0 bottom-4 z-30 px-4"
+            initial={{ y: "120%", opacity: 0 }}
+            animate={{ y: "0%", opacity: 1 }}
+            exit={{ y: "120%", opacity: 0 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           >
-            <Phone className="size-4" />
-            Konsultasi
-          </a>
-          <a
-            href={secondaryCtaHref}
-            className="inline-flex items-center justify-center rounded-xl bg-white text-slate-900 font-semibold py-3 px-4 border border-[#156773]/25 shadow-lg"
-          >
-            Lihat
-          </a>
-        </div>
-      </div>
+            <div className="mx-auto max-w-md flex items-center gap-2">
+              <a
+                href={primaryCtaHref}
+                className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-[#156773] text-white font-semibold py-3 shadow-lg"
+              >
+                <Phone className="size-4" />
+                Konsultasi
+              </a>
+              <a
+                href={secondaryCtaHref}
+                className="inline-flex items-center justify-center rounded-xl bg-white text-slate-900 font-semibold py-3 px-4 border border-[#156773]/25 shadow-lg"
+              >
+                Portofolio
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* CTA animations (CSS) */}
       <style>{`
         @keyframes ctaSheen {
           from { transform: translateX(-120%) rotate(20deg); }

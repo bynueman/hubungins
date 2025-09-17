@@ -114,8 +114,8 @@ export default function AboutSection() {
             Agency Creative
           </span>
 
-          <h2 className="mt-3 text-3xl md:text-4xl font-extrabold tracking-tight">
-            <span className="bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+          <h2 className="mt-3 text-3xl md:text-4xl font-extrabold tracking-tight text-[#156773]">
+            <span className="bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent ">
               Kalo Soal Ngonten, Gampang Dihubungin!
             </span>
           </h2>

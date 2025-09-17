@@ -34,7 +34,7 @@ export default function PricingSection({ contactHref = "#contact" }) {
 
       {/* CONTENT */}
       <div className="container mx-auto max-w-7xl px-6 py-12 md:py-14 lg:py-16">
-        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center">
+        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center text-[#156773]">
           Harga & Paket
         </h2>
 

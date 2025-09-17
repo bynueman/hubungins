@@ -141,7 +141,7 @@ export default function ServicesSection() {
         <a
           href="https://wa.me/62881023513057"
           aria-label="Konsultasi Gratis"
-          className="inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-[#156773] via-[#23A3B3] to-[#1A8A98] px-8 py-3 text-white font-semibold text-lg shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-[#23A3B3]/50 animate-pulse-slow"
+          className="inline-flex items-center gap-3 rounded-[15px] bg-gradient-to-r from-[#156773] via-[#23A3B3] to-[#1A8A98] px-8 py-3 text-white font-semibold text-lg shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-[#23A3B3]/50 animate-pulse-slow"
           style={{ animationTimingFunction: "ease-in-out" }}
         >
           <PhoneCall className="w-5 h-5 opacity-90" />
